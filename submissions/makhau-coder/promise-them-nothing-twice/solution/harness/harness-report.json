@@ -1,0 +1,88 @@
+{
+  "target": "http://localhost:8080",
+  "runAt": "2026-10-03T18:07:11.479Z",
+  "totalTests": 13,
+  "passed": 13,
+  "failed": 0,
+  "redisKillEnabled": false,
+  "results": [
+    {
+      "test": "01-basic-enforcement.js",
+      "passed": true,
+      "details": "Exactly 60 allowed, 15 rejected — limit enforced correctly.",
+      "timestamp": "2026-10-03T18:07:11.626Z"
+    },
+    {
+      "test": "02-customer-isolation.js",
+      "passed": true,
+      "details": "A exhausted at 300, B got all 10 through — isolated.",
+      "timestamp": "2026-10-03T18:07:12.050Z"
+    },
+    {
+      "test": "03-northwind-batch-window.js",
+      "passed": true,
+      "details": "1300 RPM override active and strictly verified by audit logs.",
+      "timestamp": "2026-10-03T18:07:14.610Z"
+    },
+    {
+      "test": "04-cto-success-criteria.js",
+      "passed": true,
+      "details": "Customers A and B got exactly 100, C got cut off at 100. Strictly verified by audit logs.",
+      "timestamp": "2026-10-03T18:07:15.487Z"
+    },
+    {
+      "test": "06-test-endpoints-gated.js",
+      "passed": true,
+      "details": "Endpoint returned 404 as expected.",
+      "timestamp": "2026-10-03T18:07:23.585Z"
+    },
+    {
+      "test": "07-redis-timeout.js",
+      "passed": true,
+      "details": "Server recovered in 521ms.",
+      "timestamp": "2026-10-03T18:07:24.344Z"
+    },
+    {
+      "test": "08-concurrency-analysis.js",
+      "passed": true,
+      "details": "Concurrent processing confirmed.",
+      "timestamp": "2026-10-03T18:07:25.393Z"
+    },
+    {
+      "test": "09-window-reset.js",
+      "passed": true,
+      "details": "Window successfully reset after 60s.",
+      "timestamp": "2026-10-03T18:08:26.574Z"
+    },
+    {
+      "test": "10-retry-after.js",
+      "passed": true,
+      "details": "Rejects at X-1s, allows at Xs.",
+      "timestamp": "2026-10-03T18:09:27.211Z"
+    },
+    {
+      "test": "11-rejected-not-counted.js",
+      "passed": true,
+      "details": "Rejections successfully ignored by log.",
+      "timestamp": "2026-10-03T18:10:28.419Z"
+    },
+    {
+      "test": "12-batch-window-end.js",
+      "passed": true,
+      "details": "Limit correctly dropped to 300 RPM.",
+      "timestamp": "2026-10-03T18:10:29.526Z"
+    },
+    {
+      "test": "13-redis-fallback.js",
+      "passed": true,
+      "details": "Source is 'redis' as expected.",
+      "timestamp": "2026-10-03T18:10:29.584Z"
+    },
+    {
+      "test": "14-redis-kill-recovery.js",
+      "passed": true,
+      "details": "Completed.",
+      "timestamp": "2026-10-03T18:10:29.623Z"
+    }
+  ]
+}

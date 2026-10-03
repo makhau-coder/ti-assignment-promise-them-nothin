@@ -1,0 +1,76 @@
+# Docker Compose for RelayAPI rate limiter
+#
+# Topology:
+#   nginx (port 8080) -> round-robin -> [app-node-1, app-node-2, app-node-3]
+#   All 3 app nodes share state via Redis
+#
+# Usage:
+#   docker compose up --build
+#   Then send requests to http://localhost:8080
+
+services:
+
+  # ---- Redis (shared state for rate limiting) ----
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ---- App Node 1 ----
+  app-node-1:
+    build: .
+    environment:
+      - NODE_ID=node-1
+      - PORT=3000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - TOTAL_NODES=3
+      - ENABLE_TEST_ENDPOINTS=true
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  # ---- App Node 2 ----
+  app-node-2:
+    build: .
+    environment:
+      - NODE_ID=node-2
+      - PORT=3000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - TOTAL_NODES=3
+      - ENABLE_TEST_ENDPOINTS=true
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  # ---- App Node 3 ----
+  app-node-3:
+    build: .
+    environment:
+      - NODE_ID=node-3
+      - PORT=3000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - TOTAL_NODES=3
+      - ENABLE_TEST_ENDPOINTS=true
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  # ---- Nginx Load Balancer ----
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app-node-1
+      - app-node-2
+      - app-node-3

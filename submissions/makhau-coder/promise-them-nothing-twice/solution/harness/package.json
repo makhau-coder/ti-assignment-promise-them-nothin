@@ -1,0 +1,11 @@
+{
+  "name": "relayapi-harness",
+  "version": "1.0.0",
+  "description": "Load harness for testing the RelayAPI rate limiter",
+  "main": "harness.js",
+  "scripts": {
+    "test": "node harness.js",
+    "start": "node harness.js"
+  },
+  "dependencies": {}
+}
