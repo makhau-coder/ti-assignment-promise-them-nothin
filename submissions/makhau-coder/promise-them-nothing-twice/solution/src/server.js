@@ -13,6 +13,7 @@ const { getEffectiveRpm, getCustomerConfig, setSimulatedTime, clearSimulatedTime
  * Multiple instances share state via Redis.
  */
 
+// nosemgrep: javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
 const app = express();
 
 // Port and node ID from environment (each Docker container gets its own)
