@@ -16,8 +16,22 @@ A distributed, per-customer rate limiting service built with Node.js, Express, a
 ## Testing with the Harness
 
 The harness can be run in two ways: CLI or Web Dashboard.
+### Option 1: CLI Harness
 
-### Option 1: Web Dashboard (Recommended)
+A standalone Node.js script that runs the test suite.
+
+1. Ensure you are in the `solution` directory.
+2. Run the test suite:
+   ```bash
+   npm test
+   ```
+3. The suite will run all 14 tests (taking ~3 minutes due to 60s waits). A detailed JSON report will be saved to `harness/harness-report.json`.
+4. **Redis Kill Test (Opt-in):** By default, the destructive Redis stop/start test is skipped. To run the suite *with* the Redis kill & recovery test enabled, pass the `--redis-kill` flag:
+   ```bash
+   npm test -- --redis-kill
+   ```
+
+### Option 2: Web Dashboard
 
 A premium React dashboard that provides a visual interface for the harness.
 
@@ -29,18 +43,6 @@ A premium React dashboard that provides a visual interface for the harness.
    ```
 2. Open `http://localhost:5173` in your browser.
 3. You can run all automated tests, simulate time, use the manual sender, and view live charts.
-
-### Option 2: CLI Harness
-
-A standalone Node.js script that runs the test suite.
-
-1. Navigate to the `harness` directory:
-   ```bash
-   cd ../harness
-   node harness.js http://localhost:8080
-   ```
-2. Wait ~3 minutes for the tests to complete (includes two 61-second waits for window resets).
-3. A detailed JSON report will be saved to `harness-report.json`.
 
 ## Endpoints
 
