@@ -45,7 +45,11 @@ Northwind Logistics is granted a strict schedule override in the configuration, 
 
 ## 4. What I'd Build Next (With 4 Hours)
 
-1. **Circuit Breaker:** Implement a circuit breaker around the Redis call to skip the 500ms timeout penalty entirely after a threshold of failures.
-2. **Unified Clocks:** Push the schedule override time-check logic directly into the Lua script so both the sliding window and the schedule override use `redis.call('TIME')`.
-3. **Log Aggregation:** Route the structured JSON `stdout` audit logs into an aggregation pipeline (Datadog/ELK) for enterprise compliance reporting.
-4. **Sticky Fallbacks:** Add sticky sessions in Nginx so the `RPM / 3` per-node fallback becomes completely accurate during degraded Redis states.
+With four more hours, I would first fix the slow Redis problem. Right now, if Redis gets slow, every request waits about 500ms before it switches to
+the backup limiter. I would make the app stop calling Redis for a few seconds after it fails a few times in a row, and then try it again. Next, I
+would make everything use one clock. At the moment the app picks the limit using the server's time, but it counts requests using Redis's time, so if
+the two are a bit different, the wrong limit could apply for a few seconds around 02:00 and 04:00. After that, I would add a "watch only" mode that
+just logs what the limiter would have blocked, so we can check it is correct before it touches Northwind's traffic, plus a switch to turn the
+limiter off quickly if something goes wrong. I would also add a short grace period after 04:00, so if Northwind's batch finishes a little late, they
+don't get blocked while the last minute of requests clears out. Finally, I would add more tests, including one with a deliberately wrong limiter (like
+a fixed window) to show that my tests actually catch it.
